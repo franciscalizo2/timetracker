@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import { useTimesheets } from 'src/context/timesheetsContext';
+import { formatCurrency } from 'src/utils';
+import ViewEditTableButtons from '../ViewEditTableButtons';
 
 function TimesheetsTable() {
   const navigate = useNavigate();
@@ -13,22 +15,24 @@ function TimesheetsTable() {
 
   const columns: any = useMemo(
     () => [
-      { Header: 'ID', accessor: 'id' },
-      { Header: 'Status', accessor: 'status' },
-      { Header: 'Placement', accessor: 'placement' },
+      { Header: ' ', Cell: (props: any) => <ViewEditTableButtons /> },
+
+      { Header: 'Client', accessor: 'client' },
       {
         Header: 'Consultant',
         accessor: 'firstName',
         Cell: (props: any) =>
           `${props.row.original.firstName} ${props.row.original.lastName}`,
       },
-      { Header: 'Job Title', accessor: 'jobTitle' },
-      { Header: 'Date', accessor: 'date' },
-      { Header: 'Start', accessor: 'start' },
-      { Header: 'Break', accessor: 'break' },
-      { Header: 'Finish', accessor: 'finish' },
-      { Header: 'Rate', accessor: 'rate' },
-      { Header: 'Note', accessor: 'note' },
+      { Header: 'Week Starting', accessor: 'weekStarting' },
+      { Header: 'Week Ending', accessor: 'weekEnding' },
+      {
+        Header: 'Rate',
+        accessor: 'rate',
+        Cell: (props: any) => formatCurrency(props.row.original.rate),
+      },
+      { Header: 'Total Hours', accessor: 'totalHours' },
+      { Header: 'Status', accessor: 'status' },
     ],
     []
   );
