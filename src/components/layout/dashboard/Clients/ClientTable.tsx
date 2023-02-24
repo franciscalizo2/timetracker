@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import { useClient } from 'src/context/clientContext';
+import { formatCurrency } from 'src/utils';
 
 function ClientTable() {
   const navigate = useNavigate();
@@ -13,7 +14,10 @@ function ClientTable() {
 
   const columns: any = useMemo(
     () => [
-      { Header: 'Reference #', accessor: 'ref' },
+      {
+        Header: 'Ref #',
+        accessor: 'ref',
+      },
       { Header: 'Job Title', accessor: 'jobTitle' },
       {
         Header: 'Consultant',
@@ -22,6 +26,14 @@ function ClientTable() {
           `${props.row.original.firstName} ${props.row.original.lastName}`,
       },
       { Header: 'Client', accessor: 'client' },
+      {
+        Header: 'Rate',
+        accessor: 'rate',
+        Cell: (props: any) => formatCurrency(props.row.original.rate),
+      },
+      { Header: 'Supervisor', accessor: 'supervisor' },
+      { Header: 'Supervisor Email', accessor: 'supervisorEmail' },
+      { Header: 'Billing Email', accessor: 'billingEmail' },
     ],
     []
   );

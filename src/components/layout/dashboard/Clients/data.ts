@@ -5,6 +5,10 @@ export const FAKE_DATA = [
     firstName: 'John',
     lastName: 'Smith',
     client: 'Mac Business',
+    rate: '32',
+    supervisor: 'Marc Jones',
+    supervisorEmail: 'mjones22@gmail.com',
+    billingEmail: 'sample343@aol.com',
   },
   {
     ref: 'P0002',
@@ -12,6 +16,10 @@ export const FAKE_DATA = [
     firstName: 'Al',
     lastName: 'Aagrav',
     client: 'Centium',
+    rate: '43.23',
+    supervisor: 'Rick Grimes',
+    supervisorEmail: 'rgrimes112@gmail.com',
+    billingEmail: 'example2123@yahoo.com',
   },
   {
     ref: 'P0003',
@@ -19,6 +27,10 @@ export const FAKE_DATA = [
     firstName: 'Rick ',
     lastName: 'Owens',
     client: 'Roles & Co',
+    rate: '20.50',
+    supervisor: 'Marc Jones',
+    supervisorEmail: 'mjones22@gmail.com',
+    billingEmail: 'sample343@aol.com',
   },
   {
     ref: 'P0004',
@@ -26,6 +38,10 @@ export const FAKE_DATA = [
     firstName: 'Bob',
     lastName: 'Peterson',
     client: 'Scorpion Athletics',
+    rate: '25',
+    supervisor: 'Rick Grimes',
+    supervisorEmail: 'rgrimes112@gmail.com',
+    billingEmail: 'example2123@yahoo.com',
   },
   {
     ref: 'P0005',
@@ -33,5 +49,9 @@ export const FAKE_DATA = [
     firstName: 'Ryan',
     lastName: 'Johnson',
     client: 'MaxLyfe',
+    rate: '50',
+    supervisor: 'Marc Jones',
+    supervisorEmail: 'mjones22@gmail.com',
+    billingEmail: 'sample343@aol.com',
   },
 ];

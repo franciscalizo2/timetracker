@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBusinessTime, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { useLocation, Link } from 'react-router-dom';
 
-import { getPathName } from 'src/components/utils';
+import { getPathName } from 'src/utils';
 import classes from './Sidebar.module.css';
 
 export const MENU_LINKS = [

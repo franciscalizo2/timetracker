@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 
 import { MENU_LINKS } from 'src/components/layout/dashboard/Sidebar';
-import { getPathName } from 'src/components/utils';
+import { getPathName } from 'src/utils';
 import classes from './MobileSidebar.module.css';
 
 interface MobileSidebarProps {
@@ -12,7 +12,10 @@ interface MobileSidebarProps {
   setIsBurgerOpen: any;
 }
 
-export default function MobileSidebar({ isBurgerOpen, setIsBurgerOpen }: MobileSidebarProps) {
+export default function MobileSidebar({
+  isBurgerOpen,
+  setIsBurgerOpen,
+}: MobileSidebarProps) {
   const [currentRoute, setCurrentRoute] = useState<any>(null);
 
   useEffect(() => {
@@ -58,22 +61,43 @@ export default function MobileSidebar({ isBurgerOpen, setIsBurgerOpen }: MobileS
   };
 
   return (
-    <Menu styles={menuStyles} onStateChange={(status: any) => setIsBurgerOpen(status.isOpen)} isOpen={isBurgerOpen}>
-      <div className={classes['logo-container']} onClick={() => alert('clicked')}>
-        <FontAwesomeIcon icon={faClock} style={{ fontSize: 30, marginRight: 15 }} />
+    <Menu
+      styles={menuStyles}
+      onStateChange={(status: any) => setIsBurgerOpen(status.isOpen)}
+      isOpen={isBurgerOpen}
+    >
+      <div
+        className={classes['logo-container']}
+        onClick={() => alert('clicked')}
+      >
+        <FontAwesomeIcon
+          icon={faClock}
+          style={{ fontSize: 30, marginRight: 15 }}
+        />
         <p>TimeTracker</p>
       </div>
 
       {MENU_LINKS.map((link: { title: string; url: string }, key: number) => {
         const isCurrent =
-          currentRoute === undefined && link.url === MENU_LINKS[0].url ? true : currentRoute === link.url.toLowerCase();
+          currentRoute === undefined && link.url === MENU_LINKS[0].url
+            ? true
+            : currentRoute === link.url.toLowerCase();
 
         return (
           <div
-            className={`${classes['burger-container']} ${isCurrent && classes['burger-container-current']}`}
+            className={`${classes['burger-container']} ${
+              isCurrent && classes['burger-container-current']
+            }`}
             key={key}
           >
-            <a className="menu-item" href={key === 0 ? '/dashboard' : `/dashboard/${link.url.toLowerCase()}`}>
+            <a
+              className="menu-item"
+              href={
+                key === 0
+                  ? '/dashboard'
+                  : `/dashboard/${link.url.toLowerCase()}`
+              }
+            >
               {link.title}
             </a>
           </div>
