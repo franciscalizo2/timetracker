@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { useTable, useSortBy } from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
@@ -10,12 +9,14 @@ import { formatCurrency } from 'src/utils';
 import ViewEditTableButtons from '../ViewEditTableButtons';
 
 function TimesheetsTable() {
-  const navigate = useNavigate();
-  const { timesheetsList, setSelectedTimesheet } = useTimesheets();
+  const { timesheetsList } = useTimesheets();
 
   const columns: any = useMemo(
     () => [
-      { Header: ' ', Cell: (props: any) => <ViewEditTableButtons /> },
+      {
+        Header: ' ',
+        Cell: (props: any) => <ViewEditTableButtons rowObj={props.row} />,
+      },
 
       { Header: 'Client', accessor: 'client' },
       {
@@ -47,7 +48,11 @@ function TimesheetsTable() {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column: any) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th
+                  {...column.getHeaderProps({
+                    ...column.getSortByToggleProps(),
+                  })}
+                >
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     {column.render('Header')}{' '}
                     <span>
@@ -77,13 +82,7 @@ function TimesheetsTable() {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr
-                {...row.getRowProps()}
-                onClick={() => {
-                  setSelectedTimesheet(row.original);
-                  navigate(`/dashboard/timesheets/${row.values.id}`);
-                }}
-              >
+              <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>

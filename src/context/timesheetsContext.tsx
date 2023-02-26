@@ -7,6 +7,7 @@ const TimesheetsContext = React.createContext(null as any);
 function TimesheetsProvider({ children }: any) {
   const [timesheetsList, setTimesheetsList] = React.useState(FAKE_DATA);
   const [selectedTimesheet, setSelectedTimesheet] = React.useState(null);
+  const [isEditMode, setIsEditMode] = React.useState(false);
 
   return (
     <TimesheetsContext.Provider
@@ -15,6 +16,8 @@ function TimesheetsProvider({ children }: any) {
         setTimesheetsList,
         selectedTimesheet,
         setSelectedTimesheet,
+        isEditMode,
+        setIsEditMode,
       }}
     >
       {children}

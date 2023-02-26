@@ -4,8 +4,10 @@
 
   /* Colors */
   --color-primary: #ff6b6b;
-  --color-danger: #d63031;
   --color-text-primary: #2d3436;
+  --color-danger: #d63031;
+  --color-edit: #0097e6;
+  --color-success: #27ae60;
 
   /* Inputs */
   --input-padding: 0.75rem;

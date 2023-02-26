@@ -18,12 +18,8 @@ type FormValues = {
 
 export default function Client() {
   const navigate = useNavigate();
-  const {
-    selectedTimesheet,
-    setSelectedTimesheet,
-    timesheetsList,
-    setTimesheetsList,
-  } = useTimesheets();
+  const { selectedTimesheet, setSelectedTimesheet, isEditMode } =
+    useTimesheets();
 
   const {
     register,
@@ -31,8 +27,6 @@ export default function Client() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-
-  const [isEditMode, setIsEditMode] = React.useState(false);
 
   // Set Values of form on initial render
   React.useEffect(() => {
@@ -69,6 +63,7 @@ export default function Client() {
         />
       </div>
       <h2 style={{ marginLeft: '2rem' }}>Coming Soon</h2>
+      <p>{isEditMode ? 'Edit Mode' : 'View Mode'}</p>
     </>
   );
 }

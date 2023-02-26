@@ -5,6 +5,7 @@ const time = Temporal.Now.plainTimeISO();
 
 export const FAKE_DATA = [
   {
+    id: '1',
     status: 'Missing',
     client: 'Centrium Consulting',
     firstName: 'Ryan',
@@ -16,6 +17,7 @@ export const FAKE_DATA = [
     totalHours: 10,
   },
   {
+    id: '2',
     status: 'Missing',
     client: 'Mac Jones Cleaning Co',
     firstName: 'Bill',
@@ -27,6 +29,7 @@ export const FAKE_DATA = [
     totalHours: 9,
   },
   {
+    id: '3',
     status: 'Approved',
     client: 'Perkins Technical Consulting',
     firstName: 'Paul',
@@ -38,6 +41,7 @@ export const FAKE_DATA = [
     totalHours: 22,
   },
   {
+    id: '4',
     status: 'Submitting',
     client: 'Sigma Technical Group',
     firstName: 'Jim',
@@ -49,6 +53,7 @@ export const FAKE_DATA = [
     totalHours: 5.5,
   },
   {
+    id: '5',
     status: 'Approved',
     client: 'Johnson & Johnson',
     firstName: 'Michael',
@@ -60,6 +65,7 @@ export const FAKE_DATA = [
     totalHours: 10,
   },
   {
+    id: '6',
     status: 'Missing',
     client: 'Centrium Consulting',
     firstName: 'Ryan',
@@ -71,6 +77,7 @@ export const FAKE_DATA = [
     totalHours: 8,
   },
   {
+    id: '7',
     status: 'Missing',
     client: 'Mac Jones Cleaning Co',
     firstName: 'Bill',
@@ -82,6 +89,7 @@ export const FAKE_DATA = [
     totalHours: 11,
   },
   {
+    id: '8',
     status: 'Approved',
     client: 'Perkins Technical Consulting',
     firstName: 'Paul',
@@ -93,6 +101,7 @@ export const FAKE_DATA = [
     totalHours: 2,
   },
   {
+    id: '9',
     status: 'Submitting',
     client: 'Sigma Technical Group',
     firstName: 'Jim',
@@ -104,6 +113,7 @@ export const FAKE_DATA = [
     totalHours: 3,
   },
   {
+    id: '10',
     status: 'Approved',
     client: 'Johnson & Johnson',
     firstName: 'Michael',
@@ -115,6 +125,7 @@ export const FAKE_DATA = [
     totalHours: 31,
   },
   {
+    id: '11',
     status: 'Missing',
     client: 'Centrium Consulting',
     firstName: 'Ryan',
@@ -126,6 +137,7 @@ export const FAKE_DATA = [
     totalHours: 12.5,
   },
   {
+    id: '12',
     status: 'Missing',
     client: 'Mac Jones Cleaning Co',
     firstName: 'Bill',
@@ -137,6 +149,7 @@ export const FAKE_DATA = [
     totalHours: 11,
   },
   {
+    id: '13',
     status: 'Approved',
     client: 'Perkins Technical Consulting',
     firstName: 'Paul',
@@ -148,6 +161,7 @@ export const FAKE_DATA = [
     totalHours: 10,
   },
   {
+    id: '14',
     status: 'Submitting',
     client: 'Sigma Technical Group',
     firstName: 'Jim',
@@ -159,6 +173,7 @@ export const FAKE_DATA = [
     totalHours: 9,
   },
   {
+    id: '15',
     status: 'Approved',
     client: 'Johnson & Johnson',
     firstName: 'Michael',
