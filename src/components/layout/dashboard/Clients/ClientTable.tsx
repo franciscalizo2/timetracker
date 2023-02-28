@@ -38,7 +38,12 @@ function ClientTable() {
         accessor: 'rate',
         Cell: (props: any) => formatCurrency(props.row.original.rate),
       },
-      { Header: 'Supervisor', accessor: 'supervisor' },
+      {
+        Header: 'Supervisor',
+        accessor: 'supervisor',
+        Cell: (props: any) =>
+          `${props.row.original.supervisorFirstName} ${props.row.original.supervisorLastName}`,
+      },
       { Header: 'Supervisor Email', accessor: 'supervisorEmail' },
       { Header: 'Billing Email', accessor: 'billingEmail' },
     ],
@@ -85,13 +90,7 @@ function ClientTable() {
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr
-                {...row.getRowProps()}
-                onClick={() => {
-                  setSelectedClient(row.original);
-                  navigate(`/dashboard/clients/${row.values.ref}`);
-                }}
-              >
+              <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
@@ -111,7 +110,6 @@ export default ClientTable;
 const Styles = styled.div`
   display: block;
   max-width: 100%;
-  cursor: pointer;
 
   .tableWrap {
     display: block;

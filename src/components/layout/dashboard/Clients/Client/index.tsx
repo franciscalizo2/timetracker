@@ -9,12 +9,17 @@ import { useClient } from 'src/context/clientContext';
 import BackToLink from '../../BackToLink';
 import classes from './Client.module.css';
 
-type FormValues = {
+export type FormValues = {
   referenceNumber: string;
   jobTitle: string;
   firstName: string;
   lastName: string;
   clientName: string;
+  billingEmail: string;
+  rate: number;
+  supervisorFirstName: string;
+  supervisorLastName: string;
+  supervisorEmail: string;
 };
 
 export default function Client() {
@@ -42,18 +47,39 @@ export default function Client() {
       setValue('jobTitle', selectedClient.jobTitle);
       setValue('firstName', selectedClient.firstName);
       setValue('lastName', selectedClient.lastName);
+      setValue('supervisorLastName', selectedClient.supervisorLastName);
+      setValue('supervisorFirstName', selectedClient.supervisorFirstName);
+      setValue('supervisorEmail', selectedClient.supervisorEmail);
+      setValue('rate', selectedClient.rate);
+      setValue('billingEmail', selectedClient.billingEmail);
     }
   }, []);
 
   const onSubmit = (data: FormValues) => {
-    const { clientName, firstName, lastName, jobTitle, referenceNumber } = data;
+    const {
+      clientName,
+      firstName,
+      lastName,
+      jobTitle,
+      referenceNumber,
+      billingEmail,
+      rate,
+      supervisorFirstName,
+      supervisorLastName,
+      supervisorEmail,
+    } = data;
 
     const newClient = {
       ref: referenceNumber,
-      jobTitle: jobTitle,
-      firstName: firstName,
-      lastName: lastName,
+      jobTitle,
+      firstName,
+      lastName,
       client: clientName,
+      billingEmail,
+      rate,
+      supervisorFirstName,
+      supervisorLastName,
+      supervisorEmail,
     };
 
     setClientList((old: any) => {
@@ -113,6 +139,52 @@ export default function Client() {
                 {errors.referenceNumber && (
                   <div className={classes['error-message']}>
                     {errors.referenceNumber.message}
+                  </div>
+                )}
+              </div>
+
+              <div className={`${classes['billing-email']}`}>
+                <label
+                  className={classes['input-label']}
+                  htmlFor="billingEmail"
+                >
+                  Billing Email
+                </label>
+                <input
+                  id="billingEmail"
+                  className={classes['input']}
+                  type="email"
+                  {...register('billingEmail', {
+                    required: 'This field is required',
+                    pattern: {
+                      value:
+                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                      message: 'Please enter a valid email',
+                    },
+                  })}
+                />
+                {errors.billingEmail && (
+                  <div className={classes['error-message']}>
+                    {errors.billingEmail.message}
+                  </div>
+                )}
+              </div>
+
+              <div className={`${classes['rate']}`}>
+                <label className={classes['input-label']} htmlFor="rate">
+                  Rate
+                </label>
+                <input
+                  id="rate"
+                  className={classes['input']}
+                  type="number"
+                  {...register('rate', {
+                    required: 'This field is required',
+                  })}
+                />
+                {errors.rate && (
+                  <div className={classes['error-message']}>
+                    {errors.rate.message}
                   </div>
                 )}
               </div>
@@ -193,6 +265,74 @@ export default function Client() {
                 {errors.lastName && (
                   <div className={classes['error-message']}>
                     {errors.lastName.message}
+                  </div>
+                )}
+              </div>
+
+              <div className={`${classes['supervisor-first-name']}`}>
+                <label className={classes['input-label']} htmlFor="firstName">
+                  Supervisor First Name
+                </label>
+                <input
+                  id="supervisorFirstName"
+                  className={classes['input']}
+                  type="text"
+                  {...register('supervisorFirstName', {
+                    required: 'This field is required',
+                  })}
+                />
+                {errors.supervisorFirstName && (
+                  <div className={classes['error-message']}>
+                    {errors.supervisorFirstName.message}
+                  </div>
+                )}
+              </div>
+
+              <div className={`${classes['supervisor-last-name']}`}>
+                <label
+                  className={classes['input-label']}
+                  htmlFor="supervisorLastName"
+                >
+                  Supervisor Last Name
+                </label>
+                <input
+                  id="supervisorLastName"
+                  className={classes['input']}
+                  type="text"
+                  {...register('supervisorLastName', {
+                    required: 'This field is required',
+                  })}
+                />
+                {errors.supervisorLastName && (
+                  <div className={classes['error-message']}>
+                    {errors.supervisorLastName.message}
+                  </div>
+                )}
+              </div>
+
+              <div className={`${classes['supervisor-email']}`}>
+                <label
+                  className={classes['input-label']}
+                  htmlFor="supervisorEmail"
+                >
+                  Supervisor Email
+                </label>
+                <input
+                  id="supervisorEmail"
+                  className={classes['input']}
+                  type="email"
+                  {...register('supervisorEmail', {
+                    required: 'This field is required',
+                    pattern: {
+                      value:
+                        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                      message: 'Please enter a valid email',
+                    },
+                  })}
+                />
+                {errors.supervisorEmail && (
+                  <div className={classes['error-message']}>
+                    {errors.supervisorEmail.message}
                   </div>
                 )}
               </div>

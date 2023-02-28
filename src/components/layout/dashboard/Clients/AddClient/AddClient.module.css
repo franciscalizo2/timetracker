@@ -21,6 +21,8 @@
 
 .form-container > h2 {
   text-align: center;
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .grid-container {
@@ -31,7 +33,15 @@
 }
 
 .reference {
-  grid-column: span 4;
+  grid-column: span 3;
+}
+
+.billing-email {
+  grid-column: span 6;
+}
+
+.rate {
+  grid-column: span 3;
 }
 
 .client-name {
@@ -48,6 +58,13 @@
 .last-name {
   grid-column: span 6;
   grid-row-start: 3;
+}
+
+.supervisor-first-name,
+.supervisor-last-name,
+.supervisor-email {
+  grid-column: span 4;
+  grid-row-start: 4;
 }
 
 .input-label {

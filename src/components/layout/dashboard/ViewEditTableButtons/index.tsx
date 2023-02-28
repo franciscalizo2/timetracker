@@ -42,16 +42,16 @@ export default function ViewEditTableButtons(props: ViewEditTableButtonsProps) {
       <button
         className={`${classes['button-view']} ${classes['button']}`}
         onClick={() => handleButtonClick('VIEW')}
-        data-tooltip-id="edit-tooltip"
-        data-tooltip-content="Edit"
+        data-tooltip-id="view-tooltip"
+        data-tooltip-content="View"
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} style={{ fontSize: 16 }} />
       </button>
       <button
         className={`${classes['button-edit']} ${classes['button']}`}
         onClick={() => handleButtonClick('EDIT')}
-        data-tooltip-id="view-tooltip"
-        data-tooltip-content="View"
+        data-tooltip-id="edit-tooltip"
+        data-tooltip-content="Edit"
       >
         <FontAwesomeIcon icon={faPenToSquare} style={{ fontSize: 16 }} />
       </button>

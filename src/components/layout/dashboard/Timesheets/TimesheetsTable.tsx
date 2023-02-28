@@ -103,7 +103,6 @@ export default TimesheetsTable;
 const Styles = styled.div`
   display: block;
   max-width: 100%;
-  cursor: pointer;
 
   .tableWrap {
     display: block;
