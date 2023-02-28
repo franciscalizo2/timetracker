@@ -7,10 +7,18 @@ const ClientContext = React.createContext(null as any);
 function ClientProvider({ children }: any) {
   const [clientList, setClientList] = React.useState(FAKE_DATA);
   const [selectedClient, setSelectedClient] = React.useState(null);
+  const [isEditMode, setIsEditMode] = React.useState(false);
 
   return (
     <ClientContext.Provider
-      value={{ clientList, setClientList, selectedClient, setSelectedClient }}
+      value={{
+        clientList,
+        setClientList,
+        selectedClient,
+        setSelectedClient,
+        isEditMode,
+        setIsEditMode,
+      }}
     >
       {children}
     </ClientContext.Provider>

@@ -5,6 +5,7 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { ClientProvider } from './context/clientContext';
 import { TimesheetsProvider } from './context/timesheetsContext';
+import 'react-tooltip/dist/react-tooltip.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

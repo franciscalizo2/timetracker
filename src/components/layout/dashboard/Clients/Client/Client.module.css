@@ -32,15 +32,21 @@
   cursor: pointer;
   background: transparent;
   color: rgba(0, 0, 0, 0.7);
-  border: 2px solid rgba(0, 0, 0, 0.2);
+  border: none;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 0.5rem;
   display: flex;
   align-items: center;
 }
+
 .edit-container > button > p {
   margin: 0 0 0 0.5rem;
+}
+
+.edit-container > button > svg {
+  color: var(--color-primary);
+  font-size: 1.5rem;
 }
 
 .grid-container {

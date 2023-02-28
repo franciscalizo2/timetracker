@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { Tooltip } from 'react-tooltip';
 
 import { useClient } from 'src/context/clientContext';
 import BackToLink from '../../BackToLink';
@@ -18,8 +19,13 @@ type FormValues = {
 
 export default function Client() {
   const navigate = useNavigate();
-  const { selectedClient, setSelectedClient, clientList, setClientList } =
-    useClient();
+  const {
+    selectedClient,
+    setSelectedClient,
+    setClientList,
+    isEditMode,
+    setIsEditMode,
+  } = useClient();
 
   const {
     register,
@@ -27,8 +33,6 @@ export default function Client() {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
-
-  const [isEditMode, setIsEditMode] = React.useState(false);
 
   // Set Values of form on initial render
   React.useEffect(() => {
@@ -74,12 +78,18 @@ export default function Client() {
           <div className={classes['form-container']}>
             {!isEditMode && (
               <div className={`${classes['edit-container']}`}>
-                <button type="button" onClick={() => setIsEditMode(true)}>
-                  <FontAwesomeIcon icon={faEdit} style={{ fontSize: '1rem' }} />
-                  <p>Edit</p>
+                <button
+                  type="button"
+                  onClick={() => setIsEditMode(true)}
+                  data-tooltip-id="edit-tooltip"
+                  data-tooltip-content="Edit Client"
+                >
+                  <FontAwesomeIcon icon={faEdit} />
                 </button>
               </div>
             )}
+
+            <Tooltip id="edit-tooltip" />
 
             {isEditMode && <h2>Edit Client</h2>}
 

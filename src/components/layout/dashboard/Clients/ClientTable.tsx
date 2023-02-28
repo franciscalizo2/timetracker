@@ -7,6 +7,7 @@ import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
 
 import { useClient } from 'src/context/clientContext';
 import { formatCurrency } from 'src/utils';
+import ViewEditTableButtons from 'src/components/layout/dashboard/ViewEditTableButtons';
 
 function ClientTable() {
   const navigate = useNavigate();
@@ -14,6 +15,12 @@ function ClientTable() {
 
   const columns: any = useMemo(
     () => [
+      {
+        Header: 'Actions',
+        Cell: (props: any) => (
+          <ViewEditTableButtons rowObj={props.row} type="CLIENT" />
+        ),
+      },
       {
         Header: 'Ref #',
         accessor: 'ref',

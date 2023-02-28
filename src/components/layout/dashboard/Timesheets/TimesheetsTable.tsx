@@ -14,10 +14,11 @@ function TimesheetsTable() {
   const columns: any = useMemo(
     () => [
       {
-        Header: ' ',
-        Cell: (props: any) => <ViewEditTableButtons rowObj={props.row} />,
+        Header: 'Actions',
+        Cell: (props: any) => (
+          <ViewEditTableButtons rowObj={props.row} type="TIMESHEET" />
+        ),
       },
-
       { Header: 'Client', accessor: 'client' },
       {
         Header: 'Consultant',
