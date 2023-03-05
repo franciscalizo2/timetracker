@@ -1,13 +1,17 @@
 import { useMemo } from 'react';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useTable, useSortBy } from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCaretUp,
+  faSort,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { useClient } from 'src/context/clientContext';
 import { formatCurrency } from 'src/utils';
 import ViewEditTableButtons from 'src/components/layout/dashboard/ViewEditTableButtons';
+import { TableStyles } from 'src/components/layout/dashboard/Timesheets/TimesheetsTable';
 
 function ClientTable() {
   const navigate = useNavigate();
@@ -22,7 +26,7 @@ function ClientTable() {
         ),
       },
       {
-        Header: 'Ref #',
+        Header: 'Ref',
         accessor: 'ref',
       },
       { Header: 'Job Title', accessor: 'jobTitle' },
@@ -54,7 +58,7 @@ function ClientTable() {
     useTable({ columns, data: clientList }, useSortBy);
 
   return (
-    <Styles>
+    <TableStyles>
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -64,6 +68,13 @@ function ClientTable() {
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     {column.render('Header')}{' '}
                     <span>
+                      {!column.isSorted && column.canSort && (
+                        <FontAwesomeIcon
+                          icon={faSort}
+                          style={{ fontSize: 16, marginLeft: 8 }}
+                        />
+                      )}
+
                       {column.isSorted ? (
                         column.isSortedDesc ? (
                           <FontAwesomeIcon
@@ -101,61 +112,8 @@ function ClientTable() {
           })}
         </tbody>
       </table>
-    </Styles>
+    </TableStyles>
   );
 }
 
 export default ClientTable;
-
-const Styles = styled.div`
-  display: block;
-  max-width: 100%;
-
-  .tableWrap {
-    display: block;
-    max-width: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    border-bottom: 1px solid black;
-  }
-
-  table {
-    width: 100%;
-    border-spacing: 0;
-    border: 1px solid black;
-
-    thead {
-      background: #ff6b6b;
-      color: #fff;
-    }
-
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-
-    tbody {
-      tr {
-        &:hover {
-          background: gainsboro;
-          transition: background 150ms ease-in-out;
-        }
-      }
-    }
-
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`;

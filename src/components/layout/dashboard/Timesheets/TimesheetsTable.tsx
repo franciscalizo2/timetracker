@@ -2,7 +2,11 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import { useTable, useSortBy } from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCaretUp,
+  faSort,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { useTimesheets } from 'src/context/timesheetsContext';
 import { formatCurrency } from 'src/utils';
@@ -43,7 +47,7 @@ function TimesheetsTable() {
     useTable({ columns, data: timesheetsList }, useSortBy);
 
   return (
-    <Styles>
+    <TableStyles>
       <table {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -57,6 +61,13 @@ function TimesheetsTable() {
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     {column.render('Header')}{' '}
                     <span>
+                      {!column.isSorted && column.canSort && (
+                        <FontAwesomeIcon
+                          icon={faSort}
+                          style={{ fontSize: 16, marginLeft: 8 }}
+                        />
+                      )}
+
                       {column.isSorted ? (
                         column.isSortedDesc ? (
                           <FontAwesomeIcon
@@ -94,13 +105,13 @@ function TimesheetsTable() {
           })}
         </tbody>
       </table>
-    </Styles>
+    </TableStyles>
   );
 }
 
 export default TimesheetsTable;
 
-const Styles = styled.div`
+export const TableStyles = styled.div`
   display: block;
   max-width: 100%;
 
@@ -115,7 +126,6 @@ const Styles = styled.div`
   table {
     width: 100%;
     border-spacing: 0;
-    border: 1px solid black;
 
     thead {
       background: #ff6b6b;
@@ -132,19 +142,21 @@ const Styles = styled.div`
 
     tbody {
       tr {
+        background: #fff;
+
         &:hover {
           background: gainsboro;
           transition: background 150ms ease-in-out;
         }
       }
+
+      font-size: 0.9rem;
     }
 
     th,
     td {
-      margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      border-bottom: 10px solid #f1f2f6;
 
       :last-child {
         border-right: 0;

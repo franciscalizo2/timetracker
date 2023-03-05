@@ -7,6 +7,10 @@
   align-items: center;
 }
 
+.title-container h1 {
+  color: var(--color-text-primary);
+}
+
 .button-container {
   display: flex;
   align-items: center;
