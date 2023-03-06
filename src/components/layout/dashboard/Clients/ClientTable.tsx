@@ -1,6 +1,13 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTable, useSortBy } from 'react-table';
+import {
+  useTable,
+  useSortBy,
+  usePagination,
+  TableInstance,
+  UsePaginationInstanceProps,
+  UsePaginationState,
+  UseSortByInstanceProps,
+} from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretDown,
@@ -12,10 +19,11 @@ import { useClient } from 'src/context/clientContext';
 import { formatCurrency } from 'src/utils';
 import ViewEditTableButtons from 'src/components/layout/dashboard/ViewEditTableButtons';
 import { TableStyles } from 'src/components/layout/dashboard/Timesheets/TimesheetsTable';
+import { TableInstanceWithHooks } from 'src/components/layout/dashboard/Timesheets/TimesheetsTable';
+import TablePagination from 'src/components/layout/dashboard/TablePagination';
 
 function ClientTable() {
-  const navigate = useNavigate();
-  const { clientList, setSelectedClient } = useClient();
+  const { clientList } = useClient();
 
   const columns: any = useMemo(
     () => [
@@ -54,8 +62,26 @@ function ClientTable() {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: clientList }, useSortBy);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    { columns, data: clientList, initialState: { pageIndex: 0 } as any },
+    useSortBy,
+    usePagination
+  ) as TableInstanceWithHooks<any>;
 
   return (
     <TableStyles>
@@ -98,7 +124,7 @@ function ClientTable() {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -112,6 +138,19 @@ function ClientTable() {
           })}
         </tbody>
       </table>
+
+      <TablePagination
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        pageOptions={pageOptions}
+        pageCount={pageCount}
+        gotoPage={gotoPage}
+        nextPage={nextPage}
+        previousPage={previousPage}
+        setPageSize={setPageSize}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
+      />
     </TableStyles>
   );
 }

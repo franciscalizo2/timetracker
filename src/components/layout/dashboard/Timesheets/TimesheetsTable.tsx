@@ -1,6 +1,14 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { useTable, useSortBy } from 'react-table';
+import {
+  useTable,
+  useSortBy,
+  usePagination,
+  TableInstance,
+  UsePaginationInstanceProps,
+  UsePaginationState,
+  UseSortByInstanceProps,
+} from 'react-table';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCaretDown,
@@ -11,6 +19,13 @@ import {
 import { useTimesheets } from 'src/context/timesheetsContext';
 import { formatCurrency } from 'src/utils';
 import ViewEditTableButtons from '../ViewEditTableButtons';
+import TablePagination from 'src/components/layout/dashboard/TablePagination';
+
+export type TableInstanceWithHooks<T extends object> = TableInstance<T> &
+  UsePaginationInstanceProps<T> &
+  UseSortByInstanceProps<T> & {
+    state: UsePaginationState<T>;
+  };
 
 function TimesheetsTable() {
   const { timesheetsList } = useTimesheets();
@@ -43,8 +58,26 @@ function TimesheetsTable() {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: timesheetsList }, useSortBy);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    { columns, data: timesheetsList, initialState: { pageIndex: 0 } as any },
+    useSortBy,
+    usePagination
+  ) as TableInstanceWithHooks<any>;
 
   return (
     <TableStyles>
@@ -91,7 +124,7 @@ function TimesheetsTable() {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
@@ -105,6 +138,19 @@ function TimesheetsTable() {
           })}
         </tbody>
       </table>
+
+      <TablePagination
+        canPreviousPage={canPreviousPage}
+        canNextPage={canNextPage}
+        pageOptions={pageOptions}
+        pageCount={pageCount}
+        gotoPage={gotoPage}
+        nextPage={nextPage}
+        previousPage={previousPage}
+        setPageSize={setPageSize}
+        pageIndex={pageIndex}
+        pageSize={pageSize}
+      />
     </TableStyles>
   );
 }
