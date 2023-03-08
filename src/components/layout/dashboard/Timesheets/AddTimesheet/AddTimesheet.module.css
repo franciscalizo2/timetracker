@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 800px;
   border: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 3rem 2rem 1rem;
+  padding: 1rem 2rem 1rem;
   border-radius: 5px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   background: #fff;
@@ -33,7 +33,13 @@
 }
 
 .client-name {
-  grid-column: span 12;
+  grid-row-start: 1;
+  grid-column: span 8;
+}
+
+.status {
+  grid-column: span 4;
+  grid-row-start: 1;
 }
 
 .consultant-first-name,
@@ -47,19 +53,10 @@
   grid-column: span 4;
   grid-row-start: 4;
 }
-
-.week-starting,
-.week-ending {
-  grid-column: span 6;
-  grid-row-start: 3;
-}
-
-.rate,
-.total-hours,
-.status {
+/* .rate {
   grid-column: span 4;
   grid-row-start: 4;
-}
+} */
 
 .input-label {
   color: var(--color-primary);

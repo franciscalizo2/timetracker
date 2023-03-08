@@ -151,6 +151,7 @@ export default function Client() {
                   Billing Email
                 </label>
                 <input
+                  disabled={!isEditMode}
                   id="billingEmail"
                   className={classes['input']}
                   type="email"
@@ -175,6 +176,7 @@ export default function Client() {
                   Rate
                 </label>
                 <input
+                  disabled={!isEditMode}
                   id="rate"
                   className={classes['input']}
                   type="number"
@@ -274,6 +276,7 @@ export default function Client() {
                   Supervisor First Name
                 </label>
                 <input
+                  disabled={!isEditMode}
                   id="supervisorFirstName"
                   className={classes['input']}
                   type="text"
@@ -296,6 +299,7 @@ export default function Client() {
                   Supervisor Last Name
                 </label>
                 <input
+                  disabled={!isEditMode}
                   id="supervisorLastName"
                   className={classes['input']}
                   type="text"
@@ -318,6 +322,7 @@ export default function Client() {
                   Supervisor Email
                 </label>
                 <input
+                  disabled={!isEditMode}
                   id="supervisorEmail"
                   className={classes['input']}
                   type="email"

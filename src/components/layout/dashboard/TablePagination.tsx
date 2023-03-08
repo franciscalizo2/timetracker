@@ -52,7 +52,7 @@ function TablePagination(props: any) {
             const page = e.target.value ? Number(e.target.value) - 1 : 0;
             gotoPage(page);
           }}
-          style={{ width: '100px' }}
+          style={{ width: '50px', textAlign: 'center' }}
         />
       </span>{' '}
       <select
@@ -102,7 +102,12 @@ const PaginationContainer = styled.div`
     font-size: 2rem;
   }
 
+  input[type='number'] {
+    padding: 0.25rem 0.5rem;
+  }
+
   select {
     margin-left: 1rem;
+    padding: 0.25rem 0.5rem;
   }
 `;

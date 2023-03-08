@@ -14,12 +14,12 @@ export default function UserDropdown(props: PopoverState) {
     {
       title: 'Profile',
       icon: faUser,
-      onClick: () => console.log('Clicked profile'),
+      onClick: () => alert('Coming Soon'),
     },
     {
       title: 'Settings',
       icon: faCog,
-      onClick: () => console.log('Clicked settings'),
+      onClick: () => alert('Coming Soon'),
     },
     {
       title: 'Logout',

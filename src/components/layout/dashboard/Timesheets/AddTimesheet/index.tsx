@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 
 import BackToLink from 'src/components/layout/dashboard/BackToLink';
 import { useTimesheets } from 'src/context/timesheetsContext';
 import classes from './AddTimesheet.module.css';
+import WeekPicker from 'src/components/WeekPicker';
+
+export type StartEnd = Date | null;
 
 export type FormValues = {
   clientName: string;
@@ -17,15 +22,30 @@ export type FormValues = {
   status: string;
 };
 
+const options = [
+  { value: 'missing', label: 'Missing' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'submitted', label: 'Submitted' },
+];
+
 export default function AddClient() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
   const navigate = useNavigate();
   const { setTimesheetsList } = useTimesheets();
+
+  const [weekSelection, setWeekSelection] = useState<{
+    start: StartEnd;
+    end: StartEnd;
+  }>({
+    start: null,
+    end: null,
+  });
 
   const onSubmit = (data: FormValues) => {
     const {
@@ -84,6 +104,35 @@ export default function AddClient() {
                 )}
               </div>
 
+              <div className={`${classes['status']}`}>
+                <label className={classes['input-label']} htmlFor="status">
+                  Status
+                </label>
+
+                <Controller
+                  name="status"
+                  rules={{ required: 'This field is required' }}
+                  render={({ field }: any) => (
+                    <Select
+                      {...field}
+                      options={options}
+                      placeholder="Status"
+                      isSearchable={false}
+                      styles={selectStyles}
+                      instanceId="status"
+                    />
+                  )}
+                  control={control}
+                  defaultValue={''}
+                />
+
+                {errors.status && (
+                  <div className={classes['error-message']}>
+                    {errors.status.message}
+                  </div>
+                )}
+              </div>
+
               <div className={`${classes['consultant-first-name']}`}>
                 <label
                   className={classes['input-label']}
@@ -128,48 +177,7 @@ export default function AddClient() {
                 )}
               </div>
 
-              <div className={`${classes['week-starting']}`}>
-                <label
-                  className={classes['input-label']}
-                  htmlFor="weekStarting"
-                >
-                  Week Starting
-                </label>
-                <input
-                  id="weekStarting"
-                  className={classes['input']}
-                  type="date"
-                  {...register('weekStarting', {
-                    required: 'This field is required',
-                  })}
-                />
-                {errors.weekStarting && (
-                  <div className={classes['error-message']}>
-                    {errors.weekStarting.message}
-                  </div>
-                )}
-              </div>
-
-              <div className={`${classes['week-ending']}`}>
-                <label className={classes['input-label']} htmlFor="weekEnding">
-                  Week Ending
-                </label>
-                <input
-                  id="weekEnding"
-                  className={classes['input']}
-                  type="date"
-                  {...register('weekEnding', {
-                    required: 'This field is required',
-                  })}
-                />
-                {errors.weekEnding && (
-                  <div className={classes['error-message']}>
-                    {errors.weekEnding.message}
-                  </div>
-                )}
-              </div>
-
-              <div className={`${classes['rate']}`}>
+              {/* <div className={`${classes['rate']}`}>
                 <label className={classes['input-label']} htmlFor="rate">
                   Rate
                 </label>
@@ -186,44 +194,31 @@ export default function AddClient() {
                     {errors.rate.message}
                   </div>
                 )}
-              </div>
+              </div> */}
 
-              <div className={`${classes['total-hours']}`}>
-                <label className={classes['input-label']} htmlFor="totalHours">
-                  Total Hours
-                </label>
-                <input
-                  id="totalHours"
-                  className={classes['input']}
-                  type="number"
-                  {...register('totalHours', {
-                    required: 'This field is required',
-                  })}
-                />
-                {errors.totalHours && (
-                  <div className={classes['error-message']}>
-                    {errors.totalHours.message}
-                  </div>
-                )}
-              </div>
-
-              <div className={`${classes['status']}`}>
-                <label className={classes['input-label']} htmlFor="status">
-                  Status
-                </label>
-                <input
-                  id="status"
-                  className={classes['input']}
-                  type="text"
-                  {...register('status', {
-                    required: 'This field is required',
-                  })}
-                />
-                {errors.status && (
-                  <div className={classes['error-message']}>
-                    {errors.status.message}
-                  </div>
-                )}
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gridColumn: 'span 12',
+                  gridRowStart: 3,
+                  marginTop: '.5rem',
+                }}
+              >
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <label
+                    className={classes['input-label']}
+                    htmlFor="rate"
+                    style={{ marginBottom: '.5rem', textAlign: 'center' }}
+                  >
+                    Timesheet week selection
+                  </label>
+                  <WeekPicker
+                    onChange={(start: StartEnd, end: StartEnd) => {
+                      setWeekSelection({ start, end });
+                    }}
+                  />
+                </div>
               </div>
             </div>
 
@@ -247,3 +242,30 @@ export default function AddClient() {
     </div>
   );
 }
+
+const selectStyles = {
+  container: (baseStyles: any) => ({
+    ...baseStyles,
+    margin: '.5rem 0',
+  }),
+  control: (baseStyles: any) => ({
+    ...baseStyles,
+    fontSize: 'calc(14px + (16 - 14) * ((100vw - 400px) / (1800 - 400)))',
+    border: '1px solid lightgray',
+    boxShadow: 'none',
+    '&:hover': { border: '1px solid #CCD7EA' },
+  }),
+  valueContainer: (baseStyles: any) => ({
+    ...baseStyles,
+    height: '42px',
+    overflow: 'auto',
+  }),
+  menuList: (baseStyles: any) => ({
+    ...baseStyles,
+    maxHeight: '150px',
+  }),
+  dropdownIndicator: (baseStyles: any) => ({
+    ...baseStyles,
+    svg: { fill: 'grey' },
+  }),
+};

@@ -70,9 +70,7 @@ export default function AddClient() {
                   id="referenceNumber"
                   className={classes['input']}
                   type="text"
-                  {...register('referenceNumber', {
-                    required: 'This field is required',
-                  })}
+                  {...register('referenceNumber')}
                 />
                 {errors.referenceNumber && (
                   <div className={classes['error-message']}>
@@ -110,7 +108,7 @@ export default function AddClient() {
 
               <div className={`${classes['rate']}`}>
                 <label className={classes['input-label']} htmlFor="rate">
-                  Rate
+                  Rate ($/hr)
                 </label>
                 <input
                   id="rate"
