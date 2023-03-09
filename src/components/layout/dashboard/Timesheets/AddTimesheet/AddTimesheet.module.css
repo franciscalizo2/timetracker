@@ -34,11 +34,11 @@
 
 .client-name {
   grid-row-start: 1;
-  grid-column: span 8;
+  grid-column: span 6;
 }
 
 .status {
-  grid-column: span 4;
+  grid-column: span 6;
   grid-row-start: 1;
 }
 
@@ -48,11 +48,11 @@
 }
 
 .supervisor-first-name,
-.supervisor-last-name,
-.supervisor-email {
+.supervisor-last-name {
   grid-column: span 4;
   grid-row-start: 4;
 }
+
 /* .rate {
   grid-column: span 4;
   grid-row-start: 4;
@@ -78,6 +78,14 @@
   font-size: 12px !important;
   width: 100%;
   margin: 0 2px 0;
+}
+
+.weekpicker-container {
+  display: flex;
+  justify-content: center;
+  grid-column: span 12;
+  grid-row-start: 3;
+  margin-top: 0.5rem;
 }
 
 .buttons-container {

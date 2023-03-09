@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import add from 'date-fns/add';
+import format from 'date-fns/format';
 
 import BackToLink from 'src/components/layout/dashboard/BackToLink';
 import { useTimesheets } from 'src/context/timesheetsContext';
@@ -39,6 +41,7 @@ export default function AddClient() {
   const navigate = useNavigate();
   const { setTimesheetsList } = useTimesheets();
 
+  const [isFixedRate, setIsFixedRate] = useState(false);
   const [weekSelection, setWeekSelection] = useState<{
     start: StartEnd;
     end: StartEnd;
@@ -46,6 +49,16 @@ export default function AddClient() {
     start: null,
     end: null,
   });
+
+  const calculateDays = (startDate: Date) => {
+    let days = [];
+
+    for (let i = 0; i <= 6; i++) {
+      days.push(add(startDate, { days: i }));
+    }
+
+    return days;
+  };
 
   const onSubmit = (data: FormValues) => {
     const {
@@ -106,7 +119,7 @@ export default function AddClient() {
 
               <div className={`${classes['status']}`}>
                 <label className={classes['input-label']} htmlFor="status">
-                  Status
+                  Timesheet Status
                 </label>
 
                 <Controller
@@ -177,34 +190,7 @@ export default function AddClient() {
                 )}
               </div>
 
-              {/* <div className={`${classes['rate']}`}>
-                <label className={classes['input-label']} htmlFor="rate">
-                  Rate
-                </label>
-                <input
-                  id="rate"
-                  className={classes['input']}
-                  type="number"
-                  {...register('rate', {
-                    required: 'This field is required',
-                  })}
-                />
-                {errors.rate && (
-                  <div className={classes['error-message']}>
-                    {errors.rate.message}
-                  </div>
-                )}
-              </div> */}
-
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  gridColumn: 'span 12',
-                  gridRowStart: 3,
-                  marginTop: '.5rem',
-                }}
-              >
+              <div className={classes['weekpicker-container']}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <label
                     className={classes['input-label']}
@@ -221,6 +207,93 @@ export default function AddClient() {
                 </div>
               </div>
             </div>
+
+            {weekSelection.start && weekSelection.end && (
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    width: '500px',
+                    marginBottom: '2rem',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: 120,
+                      marginRight: '1rem',
+                    }}
+                  >
+                    <input
+                      style={{ marginRight: 10 }}
+                      type="checkbox"
+                      id="isFixedRate"
+                      onChange={(e) => setIsFixedRate(e.target.checked)}
+                    />
+                    <label htmlFor="isFixedRate">Fixed Rate?</label>
+                  </div>
+
+                  {isFixedRate && (
+                    <div className={`${classes['rate']}`}>
+                      <label className={classes['input-label']} htmlFor="rate">
+                        Rate
+                      </label>
+                      <input
+                        id="rate"
+                        className={classes['input']}
+                        type="number"
+                        {...register('rate', {
+                          required: 'This field is required',
+                        })}
+                      />
+                      {errors.rate && (
+                        <div className={classes['error-message']}>
+                          {errors.rate.message}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
+                    rowGap: '0.5rem',
+                    columnGap: '1rem',
+                    alignItems: 'center',
+                  }}
+                >
+                  {calculateDays(weekSelection.start).map((el) => {
+                    return (
+                      <>
+                        <div style={{ gridColumn: 'span 2' }}>
+                          <p>{format(el, 'MM/dd/yyyy')}</p>
+                        </div>
+
+                        <div style={{ gridColumn: 'span 3' }}>
+                          <input
+                            placeholder="Rate"
+                            type="number"
+                            disabled={isFixedRate}
+                          />
+                        </div>
+
+                        <div style={{ gridColumn: 'span 3' }}>
+                          <input placeholder="Hours" type="number" />
+                        </div>
+
+                        <div style={{ gridColumn: 'span 4' }}>
+                          <input placeholder="Note" style={{ width: '100%' }} />
+                        </div>
+                      </>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <div className={classes['buttons-container']}>
               <Link to={'/dashboard/timesheets'}>
