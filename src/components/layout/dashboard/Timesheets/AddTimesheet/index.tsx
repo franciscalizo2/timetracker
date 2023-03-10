@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip';
 import add from 'date-fns/add';
+import Select from 'react-select';
 import format from 'date-fns/format';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 
 import BackToLink from 'src/components/layout/dashboard/BackToLink';
 import { useTimesheets } from 'src/context/timesheetsContext';
@@ -209,31 +212,25 @@ export default function AddClient() {
             </div>
 
             {weekSelection.start && weekSelection.end && (
-              <div>
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    width: '500px',
-                    marginBottom: '2rem',
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      width: 120,
-                      marginRight: '1rem',
-                    }}
-                  >
+              <>
+                <div className={classes['fixed-rate-container']}>
+                  <div className={classes['fixed-rate-checkbox']}>
                     <input
                       style={{ marginRight: 10 }}
                       type="checkbox"
                       id="isFixedRate"
                       onChange={(e) => setIsFixedRate(e.target.checked)}
                     />
-                    <label htmlFor="isFixedRate">Fixed Rate?</label>
+                    <label htmlFor="isFixedRate">Fixed Rate</label>
+
+                    <FontAwesomeIcon
+                      icon={faCircleInfo}
+                      data-tooltip-id="fixed-rate-tooltip"
+                      data-tooltip-content="Checking this box will use a fixed rate for all timesheet dates below. If any rate for a particular date differs from the rest, leave this box unchecked."
+                      className={`${classes['info-icon']}`}
+                    />
                   </div>
+                  <Tooltip id="fixed-rate-tooltip" style={{ width: 250 }} />
 
                   {isFixedRate && (
                     <div className={`${classes['rate']}`}>
@@ -244,9 +241,7 @@ export default function AddClient() {
                         id="rate"
                         className={classes['input']}
                         type="number"
-                        {...register('rate', {
-                          required: 'This field is required',
-                        })}
+                        {...register('rate')}
                       />
                       {errors.rate && (
                         <div className={classes['error-message']}>
@@ -257,42 +252,49 @@ export default function AddClient() {
                   )}
                 </div>
 
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(12, minmax(0, 1fr))',
-                    rowGap: '0.5rem',
-                    columnGap: '1rem',
-                    alignItems: 'center',
-                  }}
-                >
+                <div className={classes['timesheets-grid']}>
+                  <div style={{ gridColumn: 'span 4' }}>Date</div>
+                  <div style={{ gridColumn: 'span 2' }}>Rate</div>
+                  <div style={{ gridColumn: 'span 2' }}>Hours</div>
+                  <div style={{ gridColumn: 'span 4' }}>Notes</div>
+                  <hr className={classes['hr']} />
+
                   {calculateDays(weekSelection.start).map((el) => {
                     return (
                       <>
-                        <div style={{ gridColumn: 'span 2' }}>
-                          <p>{format(el, 'MM/dd/yyyy')}</p>
+                        <div style={{ gridColumn: 'span 4' }}>
+                          <p>{format(el, 'ccc	MMMM dd, yyyy')}</p>
                         </div>
 
-                        <div style={{ gridColumn: 'span 3' }}>
+                        <div style={{ gridColumn: 'span 2' }}>
                           <input
-                            placeholder="Rate"
+                            className={classes['input']}
+                            placeholder="00.00"
                             type="number"
                             disabled={isFixedRate}
                           />
                         </div>
 
-                        <div style={{ gridColumn: 'span 3' }}>
-                          <input placeholder="Hours" type="number" />
+                        <div style={{ gridColumn: 'span 2' }}>
+                          <input
+                            className={classes['input']}
+                            placeholder="0"
+                            type="number"
+                          />
                         </div>
 
                         <div style={{ gridColumn: 'span 4' }}>
-                          <input placeholder="Note" style={{ width: '100%' }} />
+                          <input
+                            className={classes['input']}
+                            placeholder="Notes"
+                            style={{ width: '100%' }}
+                          />
                         </div>
                       </>
                     );
                   })}
                 </div>
-              </div>
+              </>
             )}
 
             <div className={classes['buttons-container']}>
