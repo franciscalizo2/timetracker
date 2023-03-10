@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip';
 import add from 'date-fns/add';
@@ -23,8 +23,14 @@ export type FormValues = {
   weekStarting: Date;
   weekEnding: Date;
   rate: number;
-  totalHours: number;
   status: string;
+
+  timesheets: {
+    date: Date;
+    rate: number;
+    hours: number;
+    notes: string;
+  }[];
 };
 
 const options = [
@@ -40,6 +46,12 @@ export default function AddClient() {
     control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
+
+  const { fields, append } = useFieldArray({
+    name: 'timesheets',
+    control,
+    rules: {},
+  });
 
   const navigate = useNavigate();
   const { setTimesheetsList } = useTimesheets();
@@ -63,6 +75,19 @@ export default function AddClient() {
     return days;
   };
 
+  const handleCreateTimesheetRows = (startDate: Date) => {
+    const days = calculateDays(startDate);
+
+    for (const day of days) {
+      append({
+        date: day,
+        rate: 0,
+        hours: 0,
+        notes: '',
+      });
+    }
+  };
+
   const onSubmit = (data: FormValues) => {
     const {
       clientName,
@@ -71,7 +96,6 @@ export default function AddClient() {
       weekStarting,
       weekEnding,
       rate,
-      totalHours,
       status,
     } = data;
 
@@ -82,7 +106,6 @@ export default function AddClient() {
       weekStarting,
       weekEnding,
       rate,
-      totalHours,
       status,
     };
 
@@ -204,6 +227,10 @@ export default function AddClient() {
                   </label>
                   <WeekPicker
                     onChange={(start: StartEnd, end: StartEnd) => {
+                      if (!weekSelection.start && !weekSelection.end) {
+                        handleCreateTimesheetRows(start as Date);
+                      }
+
                       setWeekSelection({ start, end });
                     }}
                   />
@@ -259,11 +286,11 @@ export default function AddClient() {
                   <div style={{ gridColumn: 'span 4' }}>Notes</div>
                   <hr className={classes['hr']} />
 
-                  {calculateDays(weekSelection.start).map((el) => {
+                  {fields.map((field, idx) => {
                     return (
-                      <>
+                      <React.Fragment key={field.id}>
                         <div style={{ gridColumn: 'span 4' }}>
-                          <p>{format(el, 'ccc	MMMM dd, yyyy')}</p>
+                          <p>{format(field.date, 'ccc	MMMM dd, yyyy')}</p>
                         </div>
 
                         <div style={{ gridColumn: 'span 2' }}>
@@ -272,6 +299,9 @@ export default function AddClient() {
                             placeholder="00.00"
                             type="number"
                             disabled={isFixedRate}
+                            {...register(`timesheets.${idx}.rate`, {
+                              required: true,
+                            })}
                           />
                         </div>
 
@@ -280,6 +310,9 @@ export default function AddClient() {
                             className={classes['input']}
                             placeholder="0"
                             type="number"
+                            {...register(`timesheets.${idx}.hours`, {
+                              required: true,
+                            })}
                           />
                         </div>
 
@@ -288,9 +321,10 @@ export default function AddClient() {
                             className={classes['input']}
                             placeholder="Notes"
                             style={{ width: '100%' }}
+                            {...register(`timesheets.${idx}.notes`)}
                           />
                         </div>
-                      </>
+                      </React.Fragment>
                     );
                   })}
                 </div>
@@ -307,6 +341,7 @@ export default function AddClient() {
               <button
                 type="submit"
                 className={`${classes['button']} ${classes['add']}`}
+                disabled={!weekSelection.start || !weekSelection.end}
               >
                 Add
               </button>
