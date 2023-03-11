@@ -45,11 +45,13 @@ export default function AddClient() {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
+    setValue,
   } = useForm<FormValues>();
 
   const { fields, append } = useFieldArray({
     name: 'timesheets',
     control,
+    // TODO: Make all Timesheet fields required
     rules: {},
   });
 
@@ -99,6 +101,8 @@ export default function AddClient() {
       status,
     } = data;
 
+    console.log(data);
+
     const newClient = {
       client: clientName,
       firstName: consultantFirstName,
@@ -109,10 +113,13 @@ export default function AddClient() {
       status,
     };
 
-    setTimesheetsList((old: any) => [...old, newClient]);
-    navigate(`/dashboard/timesheets`);
+    // setTimesheetsList((old: any) => [...old, newClient]);
+    // navigate(`/dashboard/timesheets`);
   };
 
+  console.log('fields', fields);
+
+  console.log(errors.timesheets);
   return (
     <div>
       <div style={{ maxWidth: 200 }}>
@@ -268,7 +275,17 @@ export default function AddClient() {
                         id="rate"
                         className={classes['input']}
                         type="number"
-                        {...register('rate')}
+                        {...register('rate', {
+                          onChange: (e) => {
+                            // Change the value of all "Rate" fields
+                            fields?.forEach((f, idx) => {
+                              setValue(
+                                `timesheets.${idx}.rate`,
+                                e.target.value
+                              );
+                            });
+                          },
+                        })}
                       />
                       {errors.rate && (
                         <div className={classes['error-message']}>
