@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.3.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@hookform/resolvers": "^2.9.11",
     "@js-temporal/polyfill": "^0.4.3",
     "react": "^18.2.0",
     "react-burger-menu": "^3.0.9",
@@ -23,7 +24,8 @@
     "react-table": "^7.8.0",
     "react-tiny-popover": "^7.2.3",
     "react-tooltip": "^5.8.3",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",

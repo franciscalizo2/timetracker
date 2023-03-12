@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { useForm, Controller, useFieldArray } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { Tooltip } from 'react-tooltip';
+import * as yup from 'yup';
 import add from 'date-fns/add';
 import Select from 'react-select';
 import format from 'date-fns/format';
+import { Link } from 'react-router-dom';
+import { Tooltip } from 'react-tooltip';
 import { useNavigate } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 
-import BackToLink from 'src/components/layout/dashboard/BackToLink';
-import { useTimesheets } from 'src/context/timesheetsContext';
 import classes from './AddTimesheet.module.css';
 import WeekPicker from 'src/components/WeekPicker';
+import BackToLink from 'src/components/layout/dashboard/BackToLink';
+import { useTimesheets } from 'src/context/timesheetsContext';
 
 export type StartEnd = Date | null;
 
@@ -20,10 +22,9 @@ export type FormValues = {
   clientName: string;
   consultantFirstName: string;
   consultantLastName: string;
-  weekStarting: Date;
-  weekEnding: Date;
   rate: number;
   status: string;
+  isFixedRate: boolean;
 
   timesheets: {
     date: Date;
@@ -39,6 +40,27 @@ const options = [
   { value: 'submitted', label: 'Submitted' },
 ];
 
+const validationSchema = yup.object().shape({
+  clientName: yup.string().required('This field is required'),
+  consultantFirstName: yup.string().required('This field is required'),
+  consultantLastName: yup.string().required('This field is required'),
+  isFixedRate: yup.boolean(),
+  rate: yup.number().required('This field is required'),
+  status: yup
+    .object()
+    .shape({ name: yup.string(), label: yup.string() })
+    .required('This field is required'),
+
+  timesheets: yup.array().of(
+    yup.object().shape({
+      date: yup.date().required('This field is required'),
+      rate: yup.number().required('This field is required'),
+      hours: yup.number().required('This field is required'),
+      notes: yup.string(),
+    })
+  ),
+});
+
 export default function AddClient() {
   const {
     register,
@@ -46,7 +68,10 @@ export default function AddClient() {
     control,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm<FormValues>();
+    watch,
+  } = useForm<FormValues>({ resolver: yupResolver(validationSchema) });
+
+  const watchIsFixedRate = watch('isFixedRate', false);
 
   const { fields, append } = useFieldArray({
     name: 'timesheets',
@@ -67,18 +92,12 @@ export default function AddClient() {
     end: null,
   });
 
-  const calculateDays = (startDate: Date) => {
+  const handleCreateTimesheetRows = (startDate: Date) => {
     let days = [];
 
     for (let i = 0; i <= 6; i++) {
       days.push(add(startDate, { days: i }));
     }
-
-    return days;
-  };
-
-  const handleCreateTimesheetRows = (startDate: Date) => {
-    const days = calculateDays(startDate);
 
     for (const day of days) {
       append({
@@ -95,8 +114,6 @@ export default function AddClient() {
       clientName,
       consultantFirstName,
       consultantLastName,
-      weekStarting,
-      weekEnding,
       rate,
       status,
     } = data;
@@ -107,8 +124,6 @@ export default function AddClient() {
       client: clientName,
       firstName: consultantFirstName,
       lastName: consultantLastName,
-      weekStarting,
-      weekEnding,
       rate,
       status,
     };
@@ -117,9 +132,7 @@ export default function AddClient() {
     // navigate(`/dashboard/timesheets`);
   };
 
-  console.log('fields', fields);
-
-  console.log(errors.timesheets);
+  console.log('errors', errors);
   return (
     <div>
       <div style={{ maxWidth: 200 }}>
@@ -253,7 +266,7 @@ export default function AddClient() {
                       style={{ marginRight: 10 }}
                       type="checkbox"
                       id="isFixedRate"
-                      onChange={(e) => setIsFixedRate(e.target.checked)}
+                      {...register('isFixedRate')}
                     />
                     <label htmlFor="isFixedRate">Fixed Rate</label>
 
@@ -266,7 +279,7 @@ export default function AddClient() {
                   </div>
                   <Tooltip id="fixed-rate-tooltip" style={{ width: 250 }} />
 
-                  {isFixedRate && (
+                  {watchIsFixedRate && (
                     <div className={`${classes['rate']}`}>
                       <label className={classes['input-label']} htmlFor="rate">
                         Rate
@@ -278,7 +291,7 @@ export default function AddClient() {
                         {...register('rate', {
                           onChange: (e) => {
                             // Change the value of all "Rate" fields
-                            fields?.forEach((f, idx) => {
+                            fields?.forEach((_, idx) => {
                               setValue(
                                 `timesheets.${idx}.rate`,
                                 e.target.value
@@ -315,7 +328,7 @@ export default function AddClient() {
                             className={classes['input']}
                             placeholder="00.00"
                             type="number"
-                            disabled={isFixedRate}
+                            disabled={watchIsFixedRate}
                             {...register(`timesheets.${idx}.rate`, {
                               required: true,
                             })}
